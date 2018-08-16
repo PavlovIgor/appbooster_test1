@@ -11,10 +11,11 @@ class MainController < Controller
 
       cities = params["cities"].split(',')
 
+      Timezone::Lookup.config(:geonames) do |c|
+       c.username = variables['geonames_user']
+      end
+
       Array(cities).each do |city|
-        Timezone::Lookup.config(:geonames) do |c|
-         c.username = variables['geonames_user']
-        end
 
         res = Geokit::Geocoders::OSMGeocoder.geocode(city)
 
@@ -25,7 +26,6 @@ class MainController < Controller
           @times << timezone.utc_to_local(Time.now).strftime("#{city}: %Y-%m-%d %H:%M:%S")
         end
       end
-    @times
 
     end
   end

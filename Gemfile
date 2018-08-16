@@ -7,4 +7,3 @@ gem 'thin'
 gem 'slim'
 gem 'timezone'
 gem 'geokit'
-gem "figaro"
