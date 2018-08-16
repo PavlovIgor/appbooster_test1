@@ -5,10 +5,10 @@ class Router
     @routes = routes
   end
 
-  def resolve(request)
+  def resolve(request, variables)
     path = request.path
     if routes.key?(path)
-      ctrl(request, routes[path]).call
+      ctrl(request, variables, routes[path]).call
     else
       Controller.new.not_found
     end
@@ -20,9 +20,9 @@ class Router
 
   private
 
-  def ctrl(request, string)
+  def ctrl(request, variables, string)
     ctrl_name, action_name = string.split('#')
     klass = Object.const_get("#{ctrl_name.capitalize}Controller", Class.new)
-    klass.new(request, name: ctrl_name, action: action_name.to_sym)
+    klass.new(request, variables, name: ctrl_name, action: action_name.to_sym)
   end
 end

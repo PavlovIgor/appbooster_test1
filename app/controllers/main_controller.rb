@@ -1,13 +1,9 @@
-require 'figaro'
-
 class MainController < Controller
   def index
     @time = Time.now.utc.strftime "UTC: %Y-%m-%d %H:%M:%S"
   end
 
   def time
-    Figaro.application.path = File.join(App.root, 'config', 'application.yml')
-    Figaro.load
 
     @times = [ Time.now.utc.strftime("UTC: %Y-%m-%d %H:%M:%S") ]
 
@@ -17,7 +13,7 @@ class MainController < Controller
 
       Array(cities).each do |city|
         Timezone::Lookup.config(:geonames) do |c|
-         c.username = Figaro.env.geonames_user
+         c.username = variables['geonames_user']
         end
 
         res = Geokit::Geocoders::OSMGeocoder.geocode(city)

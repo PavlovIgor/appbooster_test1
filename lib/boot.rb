@@ -13,3 +13,8 @@ ROUTES = YAML.load( File.read(File.join(File.dirname(__FILE__),
                     '..',
                     'app',
                     'routes.yml')))
+
+VARIABLES = YAML.load( File.read(File.join(File.dirname(__FILE__),
+                    '..',
+                    'config',
+                    'application.yml')))
