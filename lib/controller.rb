@@ -1,6 +1,6 @@
 class Controller
   attr_reader :name, :action, :request, :variables
-  attr_accessor :status, :headers, :content
+  attr_accessor :status, :headers, :content, :location
 
   def initialize(request, variables, name: nil, action: nil)
     @name = name
@@ -11,9 +11,9 @@ class Controller
 
   def call
     send(action)
-    self.status = 200
-    self.headers = {"Content-Type" => "text/html"}
-    self.content = [template.render(self)]
+    self.status ||= 200
+    self.headers ||= {"Content-Type" => "text/html"}
+    self.content ||= [template.render(self)]
     self
   end
 
@@ -32,6 +32,13 @@ class Controller
   end
 
   private
+
+  def redirect_to(path)
+    self.status = 301
+    self.headers = {'Location' => path, 'Content-Type' => 'text/html'}
+    self.content = ["Moved Permanently"]
+    self
+  end
 
   def params
     request.params

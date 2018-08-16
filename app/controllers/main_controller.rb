@@ -1,6 +1,6 @@
 class MainController < Controller
   def index
-    @time = Time.now.utc.strftime "UTC: %Y-%m-%d %H:%M:%S"
+    redirect_to "/time"
   end
 
   def time
