@@ -2,21 +2,17 @@ require 'yaml'
 require "./lib/boot"
 
 class App
-  attr_reader :router, :variables
+  attr_reader :router, :settings
 
   def initialize
     @router = Router.new(ROUTES)
-    @variables = VARIABLES
+    @settings = Settings.new(VARIABLES)
   end
 
   def call(env)
     request = Rack::Request.new(env)
-    result = router.resolve(request, variables)
+    result = router.resolve(request, settings.variables)
     [result.status, result.headers, result.content]
-  end
-
-  def variables
-    @variables
   end
 
   def self.root
